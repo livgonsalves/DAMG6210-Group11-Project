@@ -1,0 +1,15 @@
+Group 11:
+
+Livia Sanjeev Gonsalves - 2653851
+Sai Deepthi Gali - 2747084
+Manunee Amit Dave - 2766603
+Krima Jayeshkumar Modi - 2632578
+
+Steps:
+
+1. Execute "create-admin.sql" file as admin with oracle autonomous database.
+2. Execute "setup-other-users-2.sql" as "app_admin" with password "ProjectAdmin1234"
+2. Execute "create-and-alter-tables-3.sql" as "app_admin" with password "ProjectAdmin1234"
+2. Execute "insert-data-4.sql" as "app_admin" with password "ProjectAdmin1234"
+2. Execute "views-5.sql" as "app_admin" with password "ProjectAdmin1234"
+
