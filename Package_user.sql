@@ -1,120 +1,114 @@
 CREATE OR REPLACE PROCEDURE PROC_CREATE_USER (
-    p_user_id IN NUMBER,
-    p_first_name IN VARCHAR2,
-    p_last_name IN VARCHAR2,
-    p_dob IN DATE, 	
-    p_phone_no IN NUMBER,
-    p_email_id IN VARCHAR2,
-    p_street_no IN NUMBER,
-    p_street_name IN VARCHAR2,
-    p_city IN VARCHAR2,
-    p_state IN VARCHAR2,
-    p_country IN VARCHAR2,
-    p_user_type IN VARCHAR2
-) IS
+    pi_admin_id NUMBER,
+    pi_first_name VARCHAR2,
+    pi_last_name VARCHAR2,
+    pi_dob DATE,
+    pi_phone_no NUMBER,
+    pi_email_id VARCHAR2,
+    pi_street_no NUMBER,
+    pi_street_name VARCHAR2,
+    pi_city VARCHAR2,
+    pi_state_name CHAR,
+    pi_country CHAR,
+    pi_user_type VARCHAR2
+)
+IS
+    v_user_id NUMBER;
+    e_code NUMBER;
+    e_msg VARCHAR2(255);
 BEGIN
-    INSERT INTO users (
-        user_id,
-        first_name,
-        last_name,
-        dob,
-        phone_no, 
-        email_id,
-        street_no,
-        street_name,
-        city,
-        state,
-        country,
-        user_type
+    -- Generate a unique user ID using a sequence
+    SELECT SEQ_USER_ID.NEXTVAL INTO v_user_id FROM DUAL;
+
+    -- Insert the new user into the USERS table
+    INSERT INTO USERS (
+        USER_ID,
+        ADMIN_ID,
+        FIRST_NAME,
+        LAST_NAME,
+        DOB,
+        PHONE_NO,
+        EMAIL_ID,
+        STREET_NO,
+        STREET_NAME,
+        CITY,
+        STATE_NAME,
+        COUNTRY,
+        USER_TYPE
     ) VALUES (
-        p_user_id,
-        p_first_name,
-        p_last_name,
-        p_dob,
-        p_phone_no,
-        p_email_id,
-        p_street_no,
-        p_street_name,
-        p_city,
-        p_state,
-        p_country,
-        p_user_type
+        v_user_id,
+        pi_admin_id,
+        pi_first_name,
+        pi_last_name,
+        pi_dob,
+        pi_phone_no,
+        pi_email_id,
+        pi_street_no,
+        pi_street_name,
+        pi_city,
+        pi_state_name,
+        pi_country,
+        pi_user_type
     );
-    COMMIT;
-    
-    DBMS_OUTPUT.PUT_LINE('New user created with ID ' || p_user_id);
+
+    -- Output a success message with the new user's ID
+    DBMS_OUTPUT.PUT_LINE('User created with ID: ' || v_user_id);
+
 EXCEPTION
     WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLCODE || ' - ' || SQLERRM);
-        ROLLBACK;
+        -- Output an error message with the details of the exception
+        e_code := SQLCODE;
+        e_msg := SQLERRM;
+        DBMS_OUTPUT.PUT_LINE('Error creating user: ' || e_code || ' - ' || e_msg);
 END PROC_CREATE_USER;
 /
 
-CREATE OR REPLACE PROCEDURE update_user(
-    p_user_id IN NUMBER,
-    p_first_name IN VARCHAR2,
-    p_last_name IN VARCHAR2,
-    p_dob IN DATE, 	
-    p_phone_no IN NUMBER,
-    p_email_id IN VARCHAR2,
-    p_street_no IN NUMBER,
-    p_street_name IN VARCHAR2,
-    p_city IN VARCHAR2,
-    p_state IN VARCHAR2,
-    p_country IN VARCHAR2,
-    p_user_type IN VARCHAR2
-)
-AS
-    e_code NUMBER;
-    e_msg VARCHAR2(255);
+CREATE OR REPLACE PROCEDURE PROC_UPDATE_USER(
+    pi_user_id NUMBER,
+    pi_first_name VARCHAR2,
+    pi_last_name VARCHAR2,
+    pi_dob DATE,
+    pi_phone_no NUMBER,
+    pi_email_id VARCHAR2,
+    pi_street_no NUMBER,
+    pi_street_name VARCHAR2,
+    pi_city VARCHAR2,
+    pi_state_name CHAR(2),
+    pi_country CHAR(2)
+) AS
 BEGIN
-    UPDATE users
-    SET first_name = p_first_name,
-        last_name = p_last_name,
-        dob = p_dob,
-        phone_no = p_phone_no,
-        email_id = p_email_id,
-        street_no = p_street_no,
-        street_name = p_street_name,
-        city = p_city,
-        state = p_state,
-        country = p_country,
-        user_type = p_user_type
-    WHERE user_id = p_user_id;
+    UPDATE USERS
+    SET FIRST_NAME = pi_first_name,
+        LAST_NAME = pi_last_name,
+        DOB = pi_dob,
+        PHONE_NO = pi_phone_no,
+        EMAIL_ID = pi_email_id,
+        STREET_NO = pi_street_no,
+        STREET_NAME = pi_street_name,
+        CITY = pi_city,
+        STATE_NAME = pi_state_name,
+        COUNTRY = pi_country
+    WHERE USER_ID = pi_user_id;
     
-    IF SQL%NOTFOUND THEN
-        RAISE_APPLICATION_ERROR(-20001, 'User not found');
-    END IF;
-    
-    COMMIT;
-    DBMS_OUTPUT.PUT_LINE('User information updated successfully');
-    
+    dbms_output.put_line('User updated successfully.');
 EXCEPTION
     WHEN OTHERS THEN
-        e_code := SQLCODE;
-        e_msg := SUBSTR(SQLERRM, 1, 255);
-        DBMS_OUTPUT.PUT_LINE('Error ' || e_code || ': ' || e_msg);
-END update_user;
-/
+        dbms_output.put_line('Error occurred: ' || SQLCODE || '-' || SQLERRM);
+END PROC_UPDATE_USER;
 
-CREATE OR REPLACE PROCEDURE delete_user(p_user_id IN NUMBER)
-AS
-    e_code NUMBER;
-    e_msg VARCHAR2(255);
+CREATE OR REPLACE PROCEDURE PROC_DELETE_USER(
+    pi_user_id NUMBER
+) AS
 BEGIN
-    DELETE FROM users WHERE user_id = p_user_id;
+    DELETE FROM USERS
+    WHERE USER_ID = pi_user_id;
     
-    IF SQL%NOTFOUND THEN
-        RAISE_APPLICATION_ERROR(-20001, 'User not found');
+    IF SQL%ROWCOUNT = 1 THEN
+        dbms_output.put_line('User deleted successfully.');
+    ELSE
+        dbms_output.put_line('User not found.');
     END IF;
-    
-    COMMIT;
-    DBMS_OUTPUT.PUT_LINE('User deleted successfully');
-    
 EXCEPTION
     WHEN OTHERS THEN
-        e_code := SQLCODE;
-        e_msg := SUBSTR(SQLERRM, 1, 255);
-        DBMS_OUTPUT.PUT_LINE('Error ' || e_code || ': ' || e_msg);
-END delete_user;
-/
+        dbms_output.put_line('Error occurred: ' || SQLCODE || '-' || SQLERRM);
+END PROC_DELETE_USER;
