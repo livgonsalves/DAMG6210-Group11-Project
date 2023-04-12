@@ -29,6 +29,7 @@ execute immediate 'grant RESOURCE to '||user_name;
 execute immediate 'grant CREATE VIEW to '||user_name;
 execute immediate 'grant CREATE USER to '||user_name;
 execute immediate 'grant ALTER USER to '||user_name;
+execute immediate 'grant CREATE SEQUENCE to '||user_name;
 execute immediate 'grant DROP USER to '||user_name;
 dbms_output.put_line('Granted Roles and Privileges to '|| user_name);
 

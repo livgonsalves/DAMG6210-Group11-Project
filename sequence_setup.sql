@@ -4,7 +4,6 @@ SEQUENCE SETUP
 
 */
 
-/SEQUENCES/
 set serveroutput on;
 
 --PROC_SSMOD_SEQUENCE_SETUP
@@ -96,9 +95,6 @@ end;
 
 
 
-begin
 
-    PROC_EBMS_SEQUENCE_SETUP;
 
-end;
-/
+EXECUTE   PROC_EBMS_SEQUENCE_SETUP;

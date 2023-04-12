@@ -1,142 +1,50 @@
-
-CREATE OR REPLACE PROCEDURE create_user(
-  user_id IN VARCHAR2,
-  first_name IN VARCHAR2,
-  last_name IN VARCHAR2,
-  email IN VARCHAR2,
-  phone_no IN VARCHAR2,
-  street IN VARCHAR2,
-  city IN VARCHAR2,
-  state IN VARCHAR2,
-  country IN VARCHAR2
+CREATE OR REPLACE PROCEDURE PROC_CREATE_USER (
+    pi_admin_id NUMBER,
+    pi_first_name VARCHAR2,
+    pi_last_name VARCHAR2,
+    pi_dob DATE,
+    pi_phone_no NUMBER,
+    pi_email_id VARCHAR2,
+    pi_street_no NUMBER,
+    pi_street_name VARCHAR2,
+    pi_city VARCHAR2,
+    pi_state_name CHAR,
+    pi_country CHAR,
+    pi_user_type VARCHAR2
 )
-AS
-BEGIN
-  INSERT INTO users (
-    user_id,
-    first_name,
-    last_name,
-    email,
-    phone_no,
-    street,
-    city,
-    state,
-    country
-  ) VALUES (
-    user_id,
-    first_name,
-    last_name,
-    email,
-    phone_no,
-    street,
-    city,
-    state,
-    country
-  );
-  COMMIT;
-END create_user;
-
-CREATE OR REPLACE PROCEDURE update_user(
-  user_id IN VARCHAR2,
-  email IN VARCHAR2,
-  phone_no IN VARCHAR2,
-  address IN VARCHAR2
-)
-AS
-BEGIN
-  UPDATE users
-  SET
-    email = update_user.email,
-    phone_no = update_user.phone_no,
-    address = update_user.address
-  WHERE user_id = update_user.user_id;
-  COMMIT;
-END update_user;
-
-CREATE OR REPLACE PROCEDURE delete_user(
-  user_id IN VARCHAR2
-)
-AS
-BEGIN
-  DELETE FROM users WHERE user_id = delete_user.user_id;
-  COMMIT;
-END delete_user;
-
-CREATE OR REPLACE PROCEDURE inactivate_user(
-  user_id IN VARCHAR2
-)
-AS
-BEGIN
-  UPDATE users SET active = 0 WHERE user_id = inactivate_user.user_id;
-  COMMIT;
-END inactivate_user;
-
-CREATE OR REPLACE PROCEDURE is_user_active(
-  user_id IN VARCHAR2,
-  is_active OUT NUMBER
-)
-AS
-BEGIN
-  SELECT active INTO is_active FROM users WHERE user_id = is_user_active.user_id;
-END is_user_active;
-
-CREATE OR REPLACE PROCEDURE get_user_registration(
-  first_name IN VARCHAR2,
-  last_name IN VARCHAR2,
-  email IN VARCHAR2,
-  user_details OUT SYS_REFCURSOR
-)
-AS
-BEGIN
-  OPEN user_details FOR 
-    SELECT * FROM users 
-    WHERE first_name = get_user_registration.first_name 
-    AND last_name = get_user_registration.last_name 
-    AND email = get_user_registration.email;
-END get_user_registration;
-
-
-
-
-
-
-
-
-create or replace procedure 
-add_meterboard(
-    p_userid number, p_meterstreetno number,p_meterstreet varchar, p_metercity varchar, p_meterstate varchar, p_metercountry varchar
-) is
-    metercount NUMBER;
+IS
+    user_count NUMBER;
     e_code NUMBER;
     e_msg VARCHAR2(255);
     exp_NULL_VALUE exception;
-    exp_METER_EXISTS exception;
-begin
+    exp_USER_EXISTS exception;
+
+BEGIN
 
     if p_userid IS NULL 
-    or p_meterstreetno IS NULL
-    or p_meterstreet IS NULL 
-    or p_metercity IS NULL  
-    or p_meterstate IS NULL
-    or p_metercountry IS NULL
+    or p_streetno IS NULL
+    or p_street IS NULL 
+    or p_city IS NULL  
+    or p_state IS NULL
+    or p_country IS NULL
     then 
         raise exp_NULL_VALUE;
     end if;
     
-    select count(1) into metercount from meterboard where meter_street_no=p_meterstreetno;
+    select count(1) into user_count from user_id where street_no=p_streetno;
     
-     if metercount>0
+     if user_count>0
     then
-        raise exp_METER_EXISTS;
+        raise exp_USER_EXISTS;
         
     else
-        insert into meterboard values(SEQ_METER_ID.nextval,p_userid, p_meterstreetno, p_meterstreet, p_metercity , p_meterstate , p_metercountry,0,sysdate,sysdate );
+        insert into user values(SEQ_USER_ID.nextval,p_userid, p_streetno, p_street, p_city , p_state , p_country,0,sysdate,sysdate );
         commit;
-    dbms_output.put_line('New meter Added'); 
+    dbms_output.put_line('New user Added'); 
     end if;
-    
-        
-exception
+
+
+EXCEPTION
 
     when exp_NULL_VALUE
     then
@@ -145,23 +53,109 @@ exception
         dbms_output.put_line('CALLED PROC WITH NULL VALUES, PLEASE SEND NON-NULL VALUES'); 
         dbms_output.put_line('---------------------------');
 
-    when exp_METER_EXISTS
+    when exp_USER_EXISTS
     then
         dbms_output.new_line;
         dbms_output.put_line('---------------------------');
         dbms_output.put_line('SECTION ALREADY EXISTS, ASSIGN A NAME THAT IS NOT USED ALREADY'); 
         dbms_output.put_line('---------------------------');
-    
-    when others
+
+
+    WHEN OTHERS THEN
+        dbms_output.put_line('Exception Occurred');  
+        e_code := SQLCODE;
+        e_msg := SQLERRM;
+        DBMS_OUTPUT.PUT_LINE('Error Code: ' || e_code);
+        dbms_output.put_line('Error Message: ' || SUBSTR(e_msg, 1, 255));
+END;
+/
+
+CREATE OR REPLACE PROCEDURE PROC_UPDATE_USER(
+    pi_user_id NUMBER,
+    pi_first_name VARCHAR2,
+    pi_last_name VARCHAR2,
+    pi_dob DATE,
+    pi_phone_no NUMBER,
+    pi_email_id VARCHAR2,
+    pi_street_no NUMBER,
+    pi_street_name VARCHAR2,
+    pi_city VARCHAR2,
+    pi_state_name CHAR(2),
+    pi_country CHAR(2)
+)is
+    user_count NUMBER;
+    e_code NUMBER;
+    email_id VARCHAR2;
+    exp_NULL_VALUE exception;
+    exp_USER_NOT_EXISTS exception;
+
+BEGIN
+    if pi_user_id IS NULL 
+    or pi_street_no IS NULL 
+    or pi_street_name IS NULL 
+    or pi_user_city IS NULL
+    or pi_user_state IS NULL
+    or pi_user_country IS NULL
     then 
+        raise exp_NULL_VALUE;
+    end if;
+
+    select count(1) into user_count from user where user_id=pi_user_id;
+    
+    if user_count>0
+    then
+        update user set
+        user_id=pi_userid,
+        user_street_no=pi_user_street_no,
+        user_street_name=pi_user_street_name,
+        user_city=pi_user_city,
+        user_state=pi_user_state,
+        user_country=pi_user_country,
+        where user_id=pi_user_id;
+        commit;
+        dbms_output.put_line('user_id Updated');      
+    else
+        raise exp_USER_NOT_EXISTS;
+    end if;
+
+EXCEPTION
+    when exp_NULL_VALUE
+    then
+        dbms_output.new_line;
+        dbms_output.put_line('---------------------------');
+        dbms_output.put_line('CALLED PROC WITH NULL VALUES, PLEASE SEND NON-NULL VALUES'); 
+        dbms_output.put_line('---------------------------');
+        
+    when exp_USER_NOT_EXISTS
+    then
+        dbms_output.new_line;
+        dbms_output.put_line('---------------------------');
+        dbms_output.put_line('SECTION DOES NOT EXISTS, GIVE THE CORRECT SECTION ID THAT EXISTS'); 
+        dbms_output.put_line('---------------------------');
+
+    WHEN OTHERS THEN
         dbms_output.put_line('Exception Occurred');
         e_code := SQLCODE;
         e_msg := SQLERRM;
         dbms_output.put_line('Error Code: ' || e_code);
         dbms_output.put_line('Error Message: ' || SUBSTR(e_msg, 1, 255)); 
-    
-end;
+
+END;
 /
 
-
-
+CREATE OR REPLACE PROCEDURE PROC_DELETE_USER(
+    pi_user_id NUMBER
+) AS
+BEGIN
+    DELETE FROM USERS
+    WHERE USER_ID = pi_user_id;
+    
+    IF SQL%ROWCOUNT = 1 THEN
+        dbms_output.put_line('User deleted successfully.');
+    ELSE
+        dbms_output.put_line('User not found.');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        dbms_output.put_line('Error occurred: ' || SQLCODE || '-' || SQLERRM);
+END PROC_DELETE_USER;
