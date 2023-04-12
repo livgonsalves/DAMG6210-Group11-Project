@@ -1,4 +1,3 @@
-
 PURGE RECYCLEBIN;
 
 SET SERVEROUTPUT ON;
@@ -167,12 +166,16 @@ ALTER TABLE USERS MODIFY (
         CONSTRAINT nn_cat_phone_no NOT NULL
 ); 
 
--- Modify Not Null constraint for email_id in users table
+-- Modify Not Null and Unique constraint for email_id in users table
 ALTER TABLE USERS MODIFY (
     email_id VARCHAR(50)
         CONSTRAINT nn_cat_email_id NOT NULL
 ); 
 
+ALTER TABLE USERS MODIFY (
+    email_id VARCHAR(50)
+        CONSTRAINT un_cat_email_id UNIQUE
+); 
 -- Modify Not Null constraint for street_no in users table
 ALTER TABLE USERS MODIFY (
     street_no NUMBER
@@ -235,7 +238,12 @@ ALTER TABLE meterboard
 -- Create Not Null constraint for meter_street_no in meterboard table
 ALTER TABLE meterboard MODIFY (
     meter_street_no NUMBER
-        CONSTRAINT nn_cat_meter_street_no NOT NULL
+        CONSTRAINT nn_cat_meter_street_no NOT NULL 
+); 
+
+ALTER TABLE meterboard MODIFY (
+    meter_street_no NUMBER
+        CONSTRAINT un_cat_meter_street_no UNIQUE
 ); 
 
 -- Modify Not Null constraint for meter_street_name in meterboard table
@@ -398,12 +406,13 @@ ALTER TABLE billing MODIFY (
         CONSTRAINT nn_billing_amount NOT NULL
 );
 
+/*
 -- Modify Not Null constraint for payment_type in billing table
 ALTER TABLE billing MODIFY (
     payment_type varchar2(30)
         CONSTRAINT nn_payment_type NOT NULL
 );
-
+*/
 -- Modify Not Null constraint for payment_status in billing table
 ALTER TABLE billing MODIFY (
     payment_status varchar2(30)
@@ -412,9 +421,4 @@ ALTER TABLE billing MODIFY (
 
 
 
-
-
-
-
-
-        
+commit;
