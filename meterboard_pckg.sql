@@ -28,7 +28,7 @@ PROCEDURE PROC_UPDATE_METER(
 END meterboard_pkg;
 
 
-
+/
 
 CREATE OR REPLACE PACKAGE BODY meterboard_pkg AS
 
@@ -144,7 +144,7 @@ exception
     then
         dbms_output.new_line;
         dbms_output.put_line('---------------------------');
-        dbms_output.put_line('METER DOES NOT EXISTS, GIVE THE CORRECT SECTION ID THAT EXISTS'); 
+        dbms_output.put_line('METER DOES NOT EXISTS, GIVE THE CORRECT ID THAT EXISTS'); 
         dbms_output.put_line('---------------------------');
        
 
@@ -220,7 +220,7 @@ exception
     then
         dbms_output.new_line;
         dbms_output.put_line('---------------------------');
-        dbms_output.put_line('SECTION DOES NOT EXISTS, GIVE THE CORRECT SECTION ID THAT EXISTS'); 
+        dbms_output.put_line('SECTION DOES NOT EXISTS, GIVE THE CORRECT ID THAT EXISTS'); 
         dbms_output.put_line('---------------------------');
        
 
@@ -238,7 +238,7 @@ end;
 END meterboard_pkg;
 
 
-
+/
 
 
 
@@ -251,11 +251,12 @@ meterboard_pkg.ADD_METERBOARD(
 );
 END;
 
+/
 
 BEGIN
 meterboard_pkg.PROC_UPDATE_METER_UNITS(122, 4, 908, 60);
 END;
-
+/
 BEGIN
 meterboard_pkg.PROC_UPDATE_METER(
     122,
@@ -266,6 +267,6 @@ meterboard_pkg.PROC_UPDATE_METER(
     'MA',
     'US');
 END;
-    
+ /   
     
     
