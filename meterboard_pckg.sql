@@ -6,7 +6,8 @@ CREATE OR REPLACE PACKAGE meterboard_pkg AS
     p_meterstreet varchar, 
     p_metercity varchar, 
     p_meterstate varchar, 
-    p_metercountry varchar
+    p_metercountry varchar,
+    p_date date
 );
 
 PROCEDURE PROC_UPDATE_METER_UNITS(
@@ -33,10 +34,10 @@ CREATE OR REPLACE PACKAGE BODY meterboard_pkg AS
 
 PROCEDURE
 ADD_METERBOARD(
-    p_userid number, p_meterstreetno number,p_meterstreet varchar, p_metercity varchar, p_meterstate varchar, p_metercountry varchar
+    p_userid number, p_meterstreetno number,p_meterstreet varchar, p_metercity varchar, p_meterstate varchar, p_metercountry varchar,
+    p_date date
 ) is
     v_end_date DATE;
-    v_start_date DATE;
     metercount NUMBER;
     e_code NUMBER;
     e_msg VARCHAR2(255);
@@ -61,9 +62,8 @@ begin
         raise exp_METER_EXISTS;
         
     else
-        v_start_date := sysdate;
-        v_end_date := ADD_MONTHS(sysdate,1);
-        insert into meterboard values(SEQ_METER_ID.nextval,p_userid, p_meterstreetno, p_meterstreet, p_metercity , p_meterstate , p_metercountry,0,v_start_date,v_end_date);
+        v_end_date := ADD_MONTHS(p_date,12);
+        insert into meterboard values(SEQ_METER_ID.nextval,p_userid, p_meterstreetno, p_meterstreet, p_metercity , p_meterstate , p_metercountry,0,p_date,v_end_date);
         commit;
     dbms_output.put_line('New meter Added'); 
     end if;
@@ -245,18 +245,19 @@ END meterboard_pkg;
 
 
 BEGIN
-    add_meterboard(
-    11,911, 'Westland Ave', 'Boston', 'MA', 'US'
+meterboard_pkg.ADD_METERBOARD(
+    8, 34,'Huntington Ave', 'Boston', 'MA', 'US',
+    sysdate
 );
 END;
 
 
 BEGIN
-PROC_UPDATE_METER_UNITS(122, 4, 908, 60);
+meterboard_pkg.PROC_UPDATE_METER_UNITS(122, 4, 908, 60);
 END;
 
 BEGIN
-PROC_UPDATE_METER(
+meterboard_pkg.PROC_UPDATE_METER(
     122,
     4, 
     908,
@@ -268,4 +269,3 @@ END;
     
     
     
-select * from meterboard;
