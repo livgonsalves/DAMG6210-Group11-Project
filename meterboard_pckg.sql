@@ -243,7 +243,7 @@ END meterboard_pkg;
 
 
 
-
+---Test cases 
 BEGIN
 meterboard_pkg.ADD_METERBOARD(
     8, 34,'Huntington Ave', 'Boston', 'MA', 'US',
@@ -268,5 +268,9 @@ meterboard_pkg.PROC_UPDATE_METER(
     'US');
 END;
  /   
+    
+    --select * from meterboard
+    
+
     
     
