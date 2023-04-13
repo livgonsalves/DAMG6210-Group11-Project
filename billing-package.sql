@@ -148,7 +148,7 @@ END billing_pkg;
 
 --TestCases 
 BEGIN
-  PROC_INSERT_BILL( 2,
+  app_admin.PROC_INSERT_BILL( 2,
             102,
             sysdate, 
             400.00,
@@ -160,7 +160,7 @@ END;
 
 --updating status of a complaint record.
 BEGIN
-  PROC_UPDATE_BILLING(1013, 'MOBILE PAYMENTS');
+  app_admin.PROC_UPDATE_BILLING(1013, 'MOBILE PAYMENTS');
 END;
 
 --select *from billing;
