@@ -1,3 +1,5 @@
+Set SERVEROUTPUT on;
+
 CREATE OR REPLACE PACKAGE billing_pkg AS 
        PROCEDURE PROC_INSERT_BILL(
             pi_user_id NUMBER,
@@ -14,7 +16,7 @@ CREATE OR REPLACE PACKAGE billing_pkg AS
        );
   
   END billing_pkg;
-
+/
 
 
 CREATE OR REPLACE PACKAGE BODY billing_pkg AS
@@ -144,7 +146,7 @@ END billing_pkg;
 
 /
 
-
+--TestCases 
 BEGIN
   PROC_INSERT_BILL( 2,
             102,
@@ -162,3 +164,4 @@ BEGIN
 END;
 
 --select *from billing;
+
