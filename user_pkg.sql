@@ -1,5 +1,5 @@
 SET SERVEROUTPUT ON;
-/
+
 
 CREATE OR REPLACE PACKAGE users_pkg AS 
     PROCEDURE add_user (
@@ -292,16 +292,6 @@ FUNCTION get_user_info (
     RETURN v_user_info;
     END get_user_info;
 
--- Function to get all users' information from the users table
--- This function returns all user information as a cursor
-FUNCTION get_all_users_info RETURN SYS_REFCURSOR IS
-v_cursor SYS_REFCURSOR;
-BEGIN
-OPEN v_cursor FOR
-SELECT *
-FROM users;
-RETURN v_cursor;
-END get_all_users_info;
 
 END users_pkg;
 
@@ -352,5 +342,8 @@ SELECT (users_pkg.get_user_info(14)) Selected_User_Information from dual;
 /
 
 --SELECT * FROM users;
+   
+  
+
    
   
