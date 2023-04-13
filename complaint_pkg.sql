@@ -83,12 +83,12 @@ PROCEDURE update_complaint_status (
  --Test Cases
  --Adding new complaint record
  BEGIN
-  insert_complaint_pkg.add_complaint(16, 121, 'My meter is switched off', 'OPEN');
+  app_admin.insert_complaint_pkg.add_complaint(16, 121, 'My meter is switched off', 'OPEN');
 END;
 
 --updating status of a complaint record.
 BEGIN
-  update_complaint_pkg.update_complaint_status(10002, 'Closed');
+  app_admin.update_complaint_pkg.update_complaint_status(10002, 'Closed');
 END;
 
 
