@@ -9,7 +9,15 @@ Steps:
 
 1. Execute "create-admin.sql" file as admin with oracle autonomous database.
 2. Execute "setup-other-users-2.sql" as "app_admin" with password "ProjectAdmin1234"
-2. Execute "create-and-alter-tables-3.sql" as "app_admin" with password "ProjectAdmin1234"
-2. Execute "insert-data-4.sql" as "app_admin" with password "ProjectAdmin1234"
-2. Execute "views-5.sql" as "app_admin" with password "ProjectAdmin1234"
+3. Execute "create-and-alter-tables-3.sql" as "app_admin" with password "ProjectAdmin1234"
+4. Execute "sequence_setup.sql" as "app_admin" with password "ProjectAdmin1234"
+5. Execute "insert-data-4.sql" as "app_admin" with password "ProjectAdmin1234"
+6. Run user package "user_pkg.sql" as "app_admin" with password "ProjectAdmin1234" and execute testcases by logging in as "CUSTOMER" and with password "Ebms@CUST@123456789" or testcases by logging in as "MGT_STAFF" and with password "Ebms@MGTSTAFF@123456789"
+7. Run user package "meterboard_pckg.sql" as "app_admin" with password "ProjectAdmin1234" and execute testcases by logging in as "MGT_STAFF" and with password "Ebms@MGTSTAFF@123456789"
+8. Run user package "billing-package.sql" as "app_admin" with password "ProjectAdmin1234" and execute testcases by logging in as "MGT_STAFF" and with password "Ebms@MGTSTAFF@123456789"
+9. Run user package "complaint_pkg.sql" as "app_admin" with password "ProjectAdmin1234" and execute insert complaint procedure by logging in as "CUSTOMER" and with password "Ebms@CUST@123456789" and execute update complaint testcases by logging in as "MNT_STAFF" and with password "Ebms@MNTSTAFF@123456789"
+10. Run user package "grants.sql" as "app_admin" with password "ProjectAdmin1234"
+11. Execute "views-5.sql" as "app_admin" with password "ProjectAdmin1234"
+
+
 
