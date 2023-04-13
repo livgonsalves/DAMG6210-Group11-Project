@@ -298,7 +298,7 @@ END users_pkg;
 /
 --Test case
 begin
-users_pkg.add_user (
+app_admin.users_pkg.add_user (
     100000,
     'Manunee',
     'Dave',
@@ -316,7 +316,7 @@ end;
 /
 
 begin
-users_pkg.update_user (
+app_admin.users_pkg.update_user (
    14,
    'Manunee',
    'Jones',
@@ -333,7 +333,7 @@ end;
 
 /
 begin
-users_pkg.delete_user(14);
+app_admin.users_pkg.delete_user(14);
 end;
 / 
 
