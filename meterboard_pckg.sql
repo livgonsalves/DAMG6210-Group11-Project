@@ -245,7 +245,7 @@ END meterboard_pkg;
 
 ---Test cases 
 BEGIN
-meterboard_pkg.ADD_METERBOARD(
+app_admin.meterboard_pkg.ADD_METERBOARD(
     8, 34,'Huntington Ave', 'Boston', 'MA', 'US',
     sysdate
 );
@@ -254,11 +254,11 @@ END;
 /
 
 BEGIN
-meterboard_pkg.PROC_UPDATE_METER_UNITS(122, 4, 908, 60);
+app_admin.meterboard_pkg.PROC_UPDATE_METER_UNITS(122, 4, 908, 60);
 END;
 /
 BEGIN
-meterboard_pkg.PROC_UPDATE_METER(
+app_admin.meterboard_pkg.PROC_UPDATE_METER(
     122,
     4, 
     908,
