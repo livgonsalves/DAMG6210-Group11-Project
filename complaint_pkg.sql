@@ -3,24 +3,27 @@ SET SERVEROUTPUT ON;
 
 
 
-CREATE OR REPLACE PACKAGE complaint_pkg AS 
+CREATE OR REPLACE PACKAGE insert_complaint_pkg AS 
     PROCEDURE add_complaint (
     p_user_id NUMBER,
     p_meter_id NUMBER,
     p_complaint_desc VARCHAR2,
     p_complaint_status VARCHAR2
   ) ;
+
+  END insert_complaint_pkg;
+    
+/
+
+CREATE OR REPLACE PACKAGE update_complaint_pkg AS 
     PROCEDURE update_complaint_status (
     p_complaint_id NUMBER,
     p_complaint_status VARCHAR2
-  ) ;
+  ) ; 
   
-  END complaint_pkg;
-    
-/
-  
-  
-CREATE OR REPLACE PACKAGE BODY complaint_pkg AS
+    END update_complaint_pkg;
+  /
+CREATE OR REPLACE PACKAGE BODY insert_complaint_pkg AS
 
 -- Procedure  to add a new complaint to the complaint table 
  -- This procedure takes in the user ID, meter ID, complaint description, and complaint status as input parameters
@@ -45,7 +48,13 @@ CREATE OR REPLACE PACKAGE BODY complaint_pkg AS
 
   -- Procedure  to update complaint status in complaint table 
   -- This procedure takes in the complaint ID and the new complaint status as input parameters
-   PROCEDURE update_complaint_status (
+
+  
+END insert_complaint_pkg;
+/
+
+CREATE OR REPLACE PACKAGE BODY update_complaint_pkg AS
+PROCEDURE update_complaint_status (
     p_complaint_id NUMBER,
     p_complaint_status VARCHAR2
   ) IS
@@ -63,12 +72,9 @@ CREATE OR REPLACE PACKAGE BODY complaint_pkg AS
             dbms_output.put_line('');
             
   END update_complaint_status;
-
-
-
   
-END complaint_pkg;
-/
+  END update_complaint_pkg;
+  /
  
  
  --SELECT * FROM COMPLAINT;
@@ -77,20 +83,16 @@ END complaint_pkg;
  --Test Cases
  --Adding new complaint record
  BEGIN
-  complaint_pkg.add_complaint(16, 121, 'My meter is switched off', 'OPEN');
+  insert_complaint_pkg.add_complaint(16, 121, 'My meter is switched off', 'OPEN');
 END;
 
 --updating status of a complaint record.
 BEGIN
-  complaint_pkg.update_complaint_status(10002, 'Closed');
+  update_complaint_pkg.update_complaint_status(10002, 'Closed');
 END;
 
 
 
- 
-  
-  
-  
  
   
   
